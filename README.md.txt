@@ -24,7 +24,7 @@ Deployment: Render / GitHub
 
 1️⃣ Clone this repository
 
-git clone <your-repo-link>
+git clone <https://github.com/divyanshi-27/Deepfake-Detection>
 cd Hackathon-Project
 
 2️⃣ Install Dependencies

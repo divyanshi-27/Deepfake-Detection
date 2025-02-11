@@ -1,4 +1,5 @@
 import pandas as pd
+
 import numpy as np
 import re
 import nltk
@@ -95,5 +96,7 @@ def predict_text_misinformation(text):
         return f"Error: {e}", 0.0
 
 # ✅ Train model if script is run
-if _name_ == "_main_":
+if __name__ == "__main__":
+
     train_model()  # ✅ Correct function call
+

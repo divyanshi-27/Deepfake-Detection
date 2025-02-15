@@ -27,7 +27,7 @@ def detect_deepfake(file):
             image = Image.open(file)
             st.image(image, caption="Uploaded Image", use_column_width=True)
             # Load the trained deepfake detection model
-            model = tf.keras.models.load_model("deepfake_detector.h5")
+            model = tf.keras.models.load_model("deepfake_detector.py")
             
             # Convert image to RGB and preprocess for the model
             image = image.convert("RGB")  # Convert to RGB

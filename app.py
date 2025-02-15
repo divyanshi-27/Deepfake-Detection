@@ -1,9 +1,10 @@
 import streamlit as st
-from text_misinformation import predict_text_misinformation  # Removed unnecessary imports
+import os
 import cv2
 import numpy as np
 import tempfile
 from PIL import Image
+from text_misinformation import predict_text_misinformation  # Ensure this function works
 
 # Streamlit UI
 st.title("📰 Deepfake & Fake News Detector")
@@ -43,7 +44,8 @@ def detect_deepfake(file):
             is_fake = fake_ratio > 0.5
             confidence = 95.0 if is_fake else 88.0
             return ("FAKE" if is_fake else "REAL"), confidence
-    except Exception:
+    except Exception as e:
+        st.error(f"Error processing file: {str(e)}")
         return "ERROR", 0.0
 
 # Processing Uploaded Media
@@ -62,12 +64,20 @@ if uploaded_file is not None:
 # Processing Text Input
 if user_input.strip():
     if st.button("Check Authenticity (Text)"):
-        prediction, confidence_score = predict_text_misinformation(user_input)  # Direct input
+        try:
+            prediction, confidence_score = predict_text_misinformation(user_input)
 
-        if confidence_score < 70:
-            st.warning("⚠ Uncertain Prediction: More training data may be required.")
-        else:
-            if prediction == "Real News":
-                st.success(f"✅ REAL News with confidence: {confidence_score:.2f}%")
+            if confidence_score < 70:
+                st.warning("⚠ Uncertain Prediction: More training data may be required.")
             else:
-                st.error(f"❌ FAKE News with confidence: {confidence_score:.2f}%")
+                if prediction == "Real News":
+                    st.success(f"✅ REAL News with confidence: {confidence_score:.2f}%")
+                else:
+                    st.error(f"❌ FAKE News with confidence: {confidence_score:.2f}%")
+        except Exception as e:
+            st.error(f"Error in text prediction: {str(e)}")
+
+# Run Streamlit App on the Correct Port
+if _name_ == "_main_":
+    port = int(os.environ.get("PORT", 8501))  # Use Render's provided port
+    st.run(port=port, host="0.0.0.0")

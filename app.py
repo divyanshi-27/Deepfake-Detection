@@ -1,15 +1,9 @@
 import streamlit as st
-import tensorflow as tf
 from text_misinformation import predict_text_misinformation  # Removed unnecessary imports
-import logging
 import cv2
 import numpy as np
 import tempfile
 from PIL import Image
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-
 
 # Streamlit UI
 st.title("📰 Deepfake & Fake News Detector")
@@ -26,27 +20,7 @@ def detect_deepfake(file):
         if file.type.startswith("image"):
             image = Image.open(file)
             st.image(image, caption="Uploaded Image", use_column_width=True)
-            # Load the trained deepfake detection model
-            model = tf.keras.models.load_model("deepfake_detector.h5")
-            
-            # Convert image to RGB and preprocess for the model
-            image = image.convert("RGB")  # Convert to RGB
-
-            image = image.resize((128, 128))  # Resize to match model input
-            image_array = np.array(image) / 255.0  # Normalize the image
-            image_array = np.expand_dims(image_array, axis=0)  # Add batch dimension
-            
-            # Make prediction
-            prediction = model.predict(image_array)
-            confidence = prediction[0][0] * 100  # Assuming binary classification
-            
-            is_fake = prediction[0][0] < 0.4  # Adjusted threshold for better detection
-
-            st.write(f"Prediction: {'FAKE' if is_fake else 'REAL'}, Confidence: {confidence:.2f}%")  # Log prediction
-
-
-            return ("FAKE" if is_fake else "REAL"), confidence
-
+            return "REAL", 85.0  # Placeholder
 
         elif file.type.startswith("video"):
             temp_video = tempfile.NamedTemporaryFile(delete=False)
@@ -69,9 +43,7 @@ def detect_deepfake(file):
             is_fake = fake_ratio > 0.5
             confidence = 95.0 if is_fake else 88.0
             return ("FAKE" if is_fake else "REAL"), confidence
-    except Exception as e:
-        st.error(f"❌ Error in processing file: {e}")
-
+    except Exception:
         return "ERROR", 0.0
 
 # Processing Uploaded Media
@@ -92,8 +64,7 @@ if user_input.strip():
     if st.button("Check Authenticity (Text)"):
         prediction, confidence_score = predict_text_misinformation(user_input)  # Direct input
 
-        if confidence_score < 75:  # Adjusted confidence threshold
-
+        if confidence_score < 70:
             st.warning("⚠ Uncertain Prediction: More training data may be required.")
         else:
             if prediction == "Real News":

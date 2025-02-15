@@ -41,9 +41,28 @@ def load_dataset():
         {"text": "Breaking: Scientists discover new exoplanet!", "label": 1},
         {"text": "Aliens have landed in California!", "label": 0},
         {"text": "NASA confirms moon mission for 2025", "label": 1},
-        {"text": "Government secretly controlling weather!", "label": 0}
+        {"text": "Government secretly controlling weather!", "label": 0},
+        {"text": "5G towers are spreading COVID-19 virus!", "label": 0},
+        {"text": "Bill Gates implants microchips in vaccines!", "label": 0},
+        {"text": "Moon landing was staged in a Hollywood studio!", "label": 0},
+        {"text": "Earth is flat and NASA is hiding the truth!", "label": 0},
+        {"text": "Drinking bleach cures COVID-19!", "label": 0},
+        {"text": "Vaccines cause autism in children!", "label": 0},
+        {"text": "Elon Musk plans to control human thoughts with Neuralink!", "label": 0},
+        {"text": "NASA discovers alien city on Mars!", "label": 0},
+        {"text": "New study shows coffee prevents all diseases!", "label": 0},
+        {"text": "Scientists confirm chocolate is a health food!", "label": 1},
+        {"text": "International Space Station completes 25 years in orbit", "label": 1},
+        {"text": "WHO announces new guidelines for pandemic preparedness", "label": 1},
+        {"text": "Global leaders agree on climate change action plan", "label": 1},
+        {"text": "COVID-19 is a hoax created to control the population!", "label": 0},
+        {"text": "The government is hiding evidence of time travel!", "label": 0},
+        {"text": "Chemtrails are being used to control our minds!", "label": 0},
+        {"text": "NASA successfully launches new Mars rover", "label": 1},
+        {"text": "World Health Organization declares end of pandemic", "label": 1},
+        {"text": "Scientists develop new vaccine for rare disease", "label": 1}
     ]
-    
+
     df = pd.DataFrame(data)
     X = df["text"]
     y = df["label"]
@@ -63,7 +82,7 @@ def train_model():
     X_test = X_test.apply(preprocess_text)
 
     # TF-IDF Vectorization
-    vectorizer = TfidfVectorizer(stop_words="english", max_features=5000, ngram_range=(1, 2))
+    vectorizer = TfidfVectorizer(stop_words="english", max_features=10000, ngram_range=(1, 2))
 
     # Train Naïve Bayes Model
     classifier = MultinomialNB(alpha=0.2)  # Lower alpha to improve generalization
@@ -88,15 +107,12 @@ def predict_text_misinformation(text):
         text_processed = preprocess_text(text)
         prediction = model.predict([text_processed])[0]
         confidence = max(model.predict_proba([text_processed])[0]) * 100
-
-        if confidence < 70:  # If model is not confident
-            return "Unclear Prediction - More training data needed.", confidence
         return "Fake News" if prediction == 0 else "Real News", confidence
     except Exception as e:
         return f"Error: {e}", 0.0
 
 # ✅ Train model if script is run
 if __name__ == "__main__":
+    train_model()
 
-    train_model()  # ✅ Correct function call
 

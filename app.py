@@ -78,6 +78,6 @@ if user_input.strip():
             st.error(f"Error in text prediction: {str(e)}")
 
 # Run Streamlit App on the Correct Port
-if _name_ == "_main_":
+if __name__ == "_main_":
     port = int(os.environ.get("PORT", 8501))  # Use Render's provided port
     st.run(port=port, host="0.0.0.0")

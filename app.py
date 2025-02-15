@@ -1,10 +1,15 @@
 import streamlit as st
-import os
+import tensorflow as tf
+from text_misinformation import predict_text_misinformation  # Removed unnecessary imports
+import logging
 import cv2
 import numpy as np
 import tempfile
 from PIL import Image
-from text_misinformation import predict_text_misinformation  # Ensure this function works
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+
 
 # Streamlit UI
 st.title("📰 Deepfake & Fake News Detector")
@@ -21,7 +26,27 @@ def detect_deepfake(file):
         if file.type.startswith("image"):
             image = Image.open(file)
             st.image(image, caption="Uploaded Image", use_column_width=True)
-            return "REAL", 85.0  # Placeholder
+            # Load the trained deepfake detection model
+            model = tf.keras.models.load_model("deepfake_detector.h5")
+            
+            # Convert image to RGB and preprocess for the model
+            image = image.convert("RGB")  # Convert to RGB
+
+            image = image.resize((128, 128))  # Resize to match model input
+            image_array = np.array(image) / 255.0  # Normalize the image
+            image_array = np.expand_dims(image_array, axis=0)  # Add batch dimension
+            
+            # Make prediction
+            prediction = model.predict(image_array)
+            confidence = prediction[0][0] * 100  # Assuming binary classification
+            
+            is_fake = prediction[0][0] < 0.4  # Adjusted threshold for better detection
+
+            st.write(f"Prediction: {'FAKE' if is_fake else 'REAL'}, Confidence: {confidence:.2f}%")  # Log prediction
+
+
+            return ("FAKE" if is_fake else "REAL"), confidence
+
 
         elif file.type.startswith("video"):
             temp_video = tempfile.NamedTemporaryFile(delete=False)
@@ -45,7 +70,8 @@ def detect_deepfake(file):
             confidence = 95.0 if is_fake else 88.0
             return ("FAKE" if is_fake else "REAL"), confidence
     except Exception as e:
-        st.error(f"Error processing file: {str(e)}")
+        st.error(f"❌ Error in processing file: {e}")
+
         return "ERROR", 0.0
 
 # Processing Uploaded Media
@@ -64,20 +90,13 @@ if uploaded_file is not None:
 # Processing Text Input
 if user_input.strip():
     if st.button("Check Authenticity (Text)"):
-        try:
-            prediction, confidence_score = predict_text_misinformation(user_input)
+        prediction, confidence_score = predict_text_misinformation(user_input)  # Direct input
 
-            if confidence_score < 70:
-                st.warning("⚠ Uncertain Prediction: More training data may be required.")
+        if confidence_score < 75:  # Adjusted confidence threshold
+
+            st.warning("⚠ Uncertain Prediction: More training data may be required.")
+        else:
+            if prediction == "Real News":
+                st.success(f"✅ REAL News with confidence: {confidence_score:.2f}%")
             else:
-                if prediction == "Real News":
-                    st.success(f"✅ REAL News with confidence: {confidence_score:.2f}%")
-                else:
-                    st.error(f"❌ FAKE News with confidence: {confidence_score:.2f}%")
-        except Exception as e:
-            st.error(f"Error in text prediction: {str(e)}")
-
-# Run Streamlit App on the Correct Port
-if __name__ == "_main_":
-    port = int(os.environ.get("PORT", 8501))  # Use Render's provided port
-    st.run(port=port, host="0.0.0.0")
+                st.error(f"❌ FAKE News with confidence: {confidence_score:.2f}%")

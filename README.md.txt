@@ -12,17 +12,22 @@ This project aims to detect and moderate harmful content at scale using Machine 
 - ✅ *Streamlit-based UI* – Simple and interactive user interface for easy use.
 - ✅ *Web Deployment* – Live on Render, making it accessible online.
 
-### 🔗 Live Demo:
 
-*Deepfake & Fake News Detector:* [Demo Link](#) (Replace with actual link)
+🔗 Live Demo:
+1--  VS Code (Everything Working : Image ,Video,Text)
+https://drive.google.com/file/d/1J7s-0LDQ1QKvwmRgsnwDlAqTzl1m618A/view?usp=drivesdk
 
----
+2-- Render Deployment (Only Image & Video Working , Text processing not working)
+https://drive.google.com/file/d/1IyYZG0SrYWBYqYr_iiCAWjvvmsb6rbIh/view?usp=drivesdk
+
+
 
 🔬 Tech Stack
 
 - *Programming Language:* Python
 - *Libraries:* OpenCV, TensorFlow, Scikit-learn, nltk, Streamlit
 - *Deployment:* Render / GitHub
+
 
 🤟 How to Run Locally?
 
@@ -109,6 +114,7 @@ streamlit run app.py
 - Confidence score needs better visualization.
 - Some misclassifications still occur in misinformation detection.
 - Real-time deepfake video detection is not yet implemented.
+- Text more train data is needed.
 
  💪 Future Enhancements You Plan to Work On
 - Improving misinformation detection accuracy.

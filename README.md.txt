@@ -46,6 +46,10 @@ pip install -r requirements.txt
 sh
 streamlit run app.py
 
+**Live Demo:**
+ [Deepfake & Fake news Detector]
+https://deepfake-detection-gwz4.onrender.com
+
 
 ---
 

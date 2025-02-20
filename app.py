@@ -1,4 +1,4 @@
- import streamlit as st
+import streamlit as st
 import tensorflow as tf
 from text_misinformation import predict_text_misinformation
 import logging

@@ -46,10 +46,29 @@ def preprocess_text(text):
 # ✅ Load Dataset
 def load_dataset():
     data = [
-        {"text": "Breaking: Scientists discover new exoplanet!", "label": 1},
+         {"text": "Breaking: Scientists discover new exoplanet!", "label": 1},
         {"text": "Aliens have landed in California!", "label": 0},
         {"text": "NASA confirms moon mission for 2025", "label": 1},
         {"text": "Government secretly controlling weather!", "label": 0},
+        {"text": "5G towers are spreading COVID-19 vir,us! ","label": 0},
+        {"text": "Bill Gates implants microchips in vaccines!", "label": 0},
+        {"text": "Moon landing was staged in a Hollywood studio!", "label": 0},
+        {"text": "Earth is flat and NASA is hiding the truth!", "label": 0},
+        {"text": "Drinking bleach cures COVID-19!", "label": 0},
+        {"text": "Vaccines cause autism in children!", "label": 0},
+        {"text": "Elon Musk plans to control human thoughts with Neuralink!", "label": 0},
+        {"text": "NASA discovers alien city on Mars!", "label": 0},
+        {"text": "New study shows coffee prevents all diseases!", "label": 0},
+        {"text": "Scientists confirm chocolate is a health food!", "label": 1},
+        {"text": "International Space Station completes 25 years in orbit", "label": 1},
+        {"text": "WHO announces new guidelines for pandemic preparedness", "label": 1},
+        {"text": "Global leaders agree on climate change action plan", "label": 1},
+        {"text": "COVID-19 is a hoax created to control the population!", "label": 0},
+        {"text": "The government is hiding evidence of time travel!", "label": 0},
+        {"text": "Chemtrails are being used to control our minds!", "label": 0},
+        {"text": "NASA successfully launches new Mars rover", "label": 1},
+        {"text": "World Health Organization declares end of pandemic", "label": 1},
+        {"text": "Scientists develop new vaccine for rare disease", "label": 1}
     ]
     
 
@@ -57,13 +76,16 @@ def load_dataset():
     X = df["text"]
     y = df["label"]
 
-    return train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42, stratify=y)
+    return X_train, X_test, y_train, y_test
+
 
 # ✅ Train Model
 def train_model():
     print("⏳ Training model...")
 
-    X_train, y_train, X_test, y_test = load_dataset()
+    X_train, X_test, y_train, y_test = load_dataset()
+
     X_train = X_train.apply(preprocess_text)
     X_test = X_test.apply(preprocess_text)
 
@@ -118,5 +140,7 @@ def predict_text_misinformation(text):
         return f"Error: {e}", 0.0
 
 # ✅ Train model if script is run
-if __name__== "_main_":
+if __name__ == "__main__":
+
     train_model()
+

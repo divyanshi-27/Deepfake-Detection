@@ -2,15 +2,14 @@ tensorflow
 numpy
 pandas
 scikit-learn
-opencv-python
 streamlit
 matplotlib
 seaborn
 joblib
 nltk
 opencv-python
-numpy
 pillow
 google-generativeai
 requests
 python-dotenv
+transformers

@@ -11,3 +11,6 @@ nltk
 opencv-python
 numpy
 pillow
+google-generativeai
+requests
+python-dotenv

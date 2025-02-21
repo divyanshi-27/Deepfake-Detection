@@ -9,4 +9,6 @@ joblib
 nltk
 opencv-python
 pillow
-
+google-generativeai
+requests
+python-dotenv

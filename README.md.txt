@@ -17,7 +17,7 @@ This project aims to detect and moderate harmful content at scale using Machine 
 1--  VS Code (Everything Working : Image ,Video,Text)
 https://drive.google.com/file/d/1J7s-0LDQ1QKvwmRgsnwDlAqTzl1m618A/view?usp=drivesdk
 
-2-- Render Deployment (Only Image & Video Working , Text processing not working)
+2-- Render Deployment (Sometime there is problem because i used free render service)
 https://drive.google.com/file/d/1IyYZG0SrYWBYqYr_iiCAWjvvmsb6rbIh/view?usp=drivesdk
 
 
